@@ -1,33 +1,47 @@
 ---
 interface Props {
-	size?: 'sm' | 'md' | 'lg';
-	block?: boolean;
-	style?: 'primary';
-	class?: string;
-	[x: string]: any;
+  size?: 'sm' | 'md' | 'lg';
+  block?: boolean;
+  href?: string;
+  download?: string;
+  style?: 'primary';
+  class?: string;
+  [x: string]: any;
 }
 
-const { size = 'md', style = 'primary', block, class: className, ...rest } = Astro.props;
+const { size = 'md', href = '', download, style = 'primary', block, class: className, ...rest } = Astro.props;
 
 const sizes = {
-	sm: 'px-4 py-1.5',
-	md: 'px-5 py-2.5',
-	lg: 'px-6 py-3',
+  sm: 'px-4 py-1.5 text-sm',
+  md: 'px-5 py-2.5 text-md',
+  lg: 'px-6 py-3 text-lg',
 };
 
 const styles = {
-	primary: 'bg-black text-white hover:bg-orange  border-2 border-transparent',
+  primary: 'bg-black text-white hover:bg-orange  border-2 border-transparent',
 };
+
+const buttonBaseClasses = 'rounded-xl text-center transition focus-visible:ring-2 ring-offset-2 ring-orange';
+const blockClasses = block ? 'w-full' : '';
+const sizeClasses = sizes[size];
+const styleClasses = styles[style];
+const additionalClasses = className ?? '';
 ---
 
-<button
-	{...rest}
-	class:list={[
-		'rounded-xl text-center transition focus-visible:ring-2 ring-offset-2 ring-orange',
-		block && 'w-full',
-		sizes[size],
-		styles[style],
-		className,
-	]}
-	><slot />
-</button>
+{href ? (
+  <a
+    {...rest}
+    href={href}
+    download={download}
+    class={`${buttonBaseClasses} ${blockClasses} ${sizeClasses} ${styleClasses} ${additionalClasses}`}
+  >
+    <slot />
+  </a>
+) : (
+  <button
+    {...rest}
+    class={`${buttonBaseClasses} ${blockClasses} ${sizeClasses} ${styleClasses} ${additionalClasses}`}
+  >
+    <slot />
+  </button>
+)}
