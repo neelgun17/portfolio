@@ -21,6 +21,7 @@ const projects = await getCollection('projects', ({ data }) => {
 					url={project.data.link}
 					title={project.data.title}
 					description={project.data.description}
+					img={project.data.img}
 					alt={project.data.img_alt}
 					tags={project.data.tags}
 				/>
@@ -28,7 +29,7 @@ const projects = await getCollection('projects', ({ data }) => {
 		}
 	</div>
 	<a
-		href="https://github.com/"
+		href="https://github.com/neelgun17/"
 		target="_blank"
 		rel="noopener"
 		class="flex flex-row text-black hover:text-orange dark:text-white dark:hover:text-orange"
