@@ -8,7 +8,7 @@
 ![Lighthouse report](https://github.com/veranikabarel/astro-portfolio/assets/48052206/e7ad23a4-1a9b-477e-a13e-a321ce6bd3d6)
 
 ## Table of Contents
-making change to update cache
+making change to update cache this should work now
 - [Demo](#demo)
 - [Features](#features)
 - [Project structure](#project-structure)
