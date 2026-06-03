@@ -35,6 +35,13 @@ const { title = 'Neel Gundlapally | Software Developer' } = Astro.props as Layou
 		<Navbar />
 		<slot />
 		<Footer />
+
+		<script>
+			// Vercel Web Analytics (static site). Requires Web Analytics enabled
+			// for the project in the Vercel dashboard.
+			import { inject } from '@vercel/analytics';
+			inject({ mode: import.meta.env.PROD ? 'production' : 'development' });
+		</script>
 		<style is:global>
 			/* Accent identity — single source of truth (R G B, space-separated) */
 			:root {
