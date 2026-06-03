@@ -1,54 +1,116 @@
 ---
-import Button from '@components/ui/Button.astro';
 import ToggleTheme from '@components/ui/ToggleTheme.astro';
 import { Astronav, MenuIcon, MenuItems } from 'astro-navbar';
 
 const menuitems = [
-	{
-		title: 'About',
-		path: '#about',
-	},
-	{
-		title: 'Projects',
-		path: '#projects',
-	},
-	{
-		title: 'Contact',
-		path: '#contact',
-	},
+	{ title: 'About', path: '#about' },
+	{ title: 'Work', path: '#projects' },
+	{ title: 'Stack', path: '#skills' },
+	{ title: 'Experience', path: '#experience' },
+	{ title: 'Contact', path: '#contact' },
 ];
 ---
 
-<header data-testId="header" class="my-5 flex flex-col items-center justify-between lg:flex-row">
-	<Astronav>
-		<div class="flex w-full items-center justify-between lg:w-auto">
-			<Button size={'sm'} href="/Neel_Resume_V2.pdf" download="Neel_Resume.pdf">
-				Download CV
-			</Button>
-			
-			<div class="block lg:hidden">
-				<MenuIcon class="h-4 w-4 text-black dark:text-white" />
+<header
+	data-testId="header"
+	class="fixed left-0 right-0 top-0 z-50 border-b border-neutral-200/10 bg-neutral-50/80 backdrop-blur-md dark:bg-neutral-950/80"
+>
+	<nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+		<Astronav>
+			<div class="flex w-full items-center justify-between lg:w-auto">
+				<a href="/" class="font-mono text-xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+					NG
+				</a>
+				<div class="block lg:hidden">
+					<MenuIcon class="h-5 w-5 text-neutral-900 dark:text-neutral-100" />
+				</div>
 			</div>
-		</div>
-		<MenuItems class="mt-2 hidden w-full lg:mt-0 lg:flex lg:w-auto">
-			<ul class="flex flex-col lg:flex-row lg:gap-3">
-				{
-					menuitems.map((item) => (
-						<>
+			<MenuItems class="mt-4 hidden w-full lg:mt-0 lg:flex lg:w-auto">
+				<ul class="flex flex-col items-center gap-1 lg:flex-row lg:gap-1">
+					{
+						menuitems.map((item) => (
 							<li>
 								<a
 									aria-label="navigation link"
 									href={item.path}
-									class="flex py-2 text-black hover:text-orange dark:text-white dark:hover:text-orange lg:px-3"
+									class="nav-scramble block px-4 py-2 font-mono text-xs font-medium uppercase tracking-widest text-neutral-500 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+									data-text={item.title}
 								>
 									{item.title}
 								</a>
 							</li>
-						</>
-					))
-				}
-				<li><ToggleTheme /></li>
-			</ul>
-		</MenuItems>
-	</Astronav>
+						))
+					}
+					<li class="lg:ml-2">
+						<a
+							href="/resume.pdf"
+							target="_blank"
+							rel="noopener"
+							class="block rounded-md border border-neutral-300 px-3 py-1.5 font-mono text-xs font-medium uppercase tracking-widest text-neutral-700 transition-colors hover:border-accent hover:text-accent dark:border-neutral-700 dark:text-neutral-300"
+						>
+							Résumé
+						</a>
+					</li>
+					<li class="ml-1"><ToggleTheme /></li>
+				</ul>
+			</MenuItems>
+		</Astronav>
+	</nav>
 </header>
+
+<script>
+	import { prepareWithSegments, measureNaturalWidth } from '@chenglou/pretext';
+
+	// Text scramble effect on nav links using pretext for measurement
+	const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%';
+	const SCRAMBLE_DURATION = 400; // ms
+	const SCRAMBLE_STEPS = 8;
+
+	document.fonts.ready.then(() => {
+		const links = document.querySelectorAll('.nav-scramble') as NodeListOf<HTMLAnchorElement>;
+
+		links.forEach((link) => {
+			const originalText = link.getAttribute('data-text') || '';
+			const font = '500 12px "JetBrains Mono", monospace';
+
+			// Use pretext to measure exact width so link doesn't jump during scramble
+			const prepared = prepareWithSegments(originalText, font);
+			const width = measureNaturalWidth(prepared);
+			link.style.minWidth = `${width + 32}px`; // + padding
+
+			let scrambleTimeout: ReturnType<typeof setTimeout>;
+			let step = 0;
+
+			link.addEventListener('mouseenter', () => {
+				step = 0;
+				const run = () => {
+					if (step >= SCRAMBLE_STEPS) {
+						link.textContent = originalText;
+						return;
+					}
+					// Each step reveals more correct characters from left to right
+					const revealed = Math.floor((step / SCRAMBLE_STEPS) * originalText.length);
+					let display = '';
+					for (let i = 0; i < originalText.length; i++) {
+						if (i < revealed) {
+							display += originalText[i];
+						} else if (originalText[i] === ' ') {
+							display += ' ';
+						} else {
+							display += CHARS[Math.floor(Math.random() * CHARS.length)];
+						}
+					}
+					link.textContent = display;
+					step++;
+					scrambleTimeout = setTimeout(run, SCRAMBLE_DURATION / SCRAMBLE_STEPS);
+				};
+				run();
+			});
+
+			link.addEventListener('mouseleave', () => {
+				clearTimeout(scrambleTimeout);
+				link.textContent = originalText;
+			});
+		});
+	});
+</script>

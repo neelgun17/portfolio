@@ -8,9 +8,11 @@ const { tags } = Astro.props;
 
 {
 	tags && (
-		<div class="mt-2 flex w-2/3 flex-row flex-wrap justify-between">
+		<div class="flex flex-wrap gap-1.5">
 			{tags.map((tag) => (
-				<span class="inline-block rounded py-2 text-xs text-black  lg:py-1">#{tag}</span>
+				<span class="rounded-md border border-neutral-200 bg-neutral-50 px-2 py-0.5 font-mono text-[11px] text-neutral-500 dark:border-neutral-700 dark:bg-neutral-800/60 dark:text-neutral-400">
+					{tag}
+				</span>
 			))}
 		</div>
 	)

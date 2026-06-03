@@ -2,52 +2,55 @@
 import Card from '@components/ui/Card.astro';
 import { getCollection } from 'astro:content';
 
-const projects = await getCollection('projects', ({ data }) => {
-	return !data.inProgress;
-});
+const projects = (await getCollection('projects', ({ data }) => !data.inProgress)).sort(
+	(a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
+);
 ---
 
 <section
 	data-testid="projects"
 	id="projects"
-	class="mb-10 flex flex-col items-center justify-center md:mb-0 md:h-screen"
+	class="border-t border-neutral-200 px-6 py-24 dark:border-neutral-800 md:py-32"
 >
-	<h2 class="font-monospace text-2xl text-orange lg:text-4xl">Projects</h2>
-	<span class="mb-10 h-1 w-10 bg-orange"></span>
-	<div class="mb-10 flex w-full flex-col flex-wrap items-center md:flex-row">
-		{
-			projects.map((project) => (
-				<Card
-					url={project.data.link}
-					title={project.data.title}
-					description={project.data.description}
-					img={project.data.img}
-					alt={project.data.img_alt}
-					tags={project.data.tags}
-				/>
-			))
-		}
+	<div class="mx-auto max-w-6xl">
+		<div class="mb-12 flex flex-wrap items-end justify-between gap-4">
+			<div>
+				<p class="mb-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-accent">
+					<span class="text-neutral-400 dark:text-neutral-600">04</span>
+					/ Work
+				</p>
+				<h2 class="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100 lg:text-4xl">
+					Selected projects
+				</h2>
+			</div>
+			<a
+				href="https://github.com/neelgun17/"
+				target="_blank"
+				rel="noopener"
+				class="group inline-flex items-center gap-2 font-mono text-sm text-neutral-500 transition-colors hover:text-accent"
+				aria-label="link to repository"
+			>
+				All on GitHub
+				<svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+				</svg>
+			</a>
+		</div>
+
+		<div id="projects-grid" class="grid gap-5 md:grid-cols-2">
+			{
+				projects.map((project, i) => (
+					<Card
+						index={i + 1}
+						url={project.data.link}
+						title={project.data.title}
+						role={project.data.role}
+						year={project.data.year}
+						description={project.data.description}
+						tags={project.data.tags}
+					/>
+				))
+			}
+		</div>
 	</div>
-	<a
-		href="https://github.com/neelgun17/"
-		target="_blank"
-		rel="noopener"
-		class="flex flex-row text-black hover:text-orange dark:text-white dark:hover:text-orange"
-		aria-label="link to repository"
-	>
-		View full private projects archive
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
-			viewBox="0 0 24 24"
-			stroke-width="1.5"
-			stroke="currentColor"
-			class="ml-1 h-6 w-6"
-		>
-			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
-		</svg>
-	</a>
 </section>

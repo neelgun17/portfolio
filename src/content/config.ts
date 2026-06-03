@@ -9,6 +9,9 @@ const projectsCollection = defineCollection({
 		tags: z.array(z.string()),
 		link: z.string(),
 		img_alt: z.string().optional(),
+		year: z.string().optional(),
+		role: z.string().optional(),
+		order: z.number().optional(),
 	}),
 });
 

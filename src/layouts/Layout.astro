@@ -2,40 +2,68 @@
 import Footer from '@components/Footer.astro';
 import Navbar from '@components/Navbar.astro';
 import { SEO } from 'astro-seo';
+import '@fontsource-variable/inter';
+import '@fontsource/jetbrains-mono';
 
 export interface LayoutProps {
 	title: string;
 }
 
-const { title = 'John Doe | Web developer' } = Astro.props as LayoutProps;
+const { title = 'Neel Gundlapally | Software Developer' } = Astro.props as LayoutProps;
 ---
 
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth" data-testid="html">
 	<head>
 		<SEO
-			title="Neel Gundlapally's Website"
-			description="A heavily optimized description full of well-researched keywords."
+			title="Neel Gundlapally"
+			description="Software developer and CS student at UT Austin. Portfolio showcasing projects in web development, design, and machine learning."
 		/>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="generator" content={Astro.generator} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-
 		<title>{title}</title>
 	</head>
 	<body
-		class="mx-auto max-w-screen-xl bg-white px-5 font-sans text-white dark:bg-black xs:text-[16px] md:text-[18px]"
+		class="relative bg-neutral-50 font-sans text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100"
 	>
+		<!-- Film-grain texture overlay -->
+		<div class="grain-overlay" aria-hidden="true"></div>
+
 		<Navbar />
 		<slot />
 		<Footer />
 		<style is:global>
-			/* Improve Page speed */
-			/* https://css-tricks.com/almanac/properties/c/content-visibility/ */
+			/* Accent identity — single source of truth (R G B, space-separated) */
+			:root {
+				--accent: 234 88 12; /* orange-600 — readable on light */
+				--accent-bright: 249 115 22; /* orange-500 — hover */
+			}
+			:root.dark {
+				--accent: 251 146 60; /* orange-400 — glows on dark */
+				--accent-bright: 253 186 116; /* orange-300 */
+			}
+
 			img {
 				content-visibility: auto;
+			}
+
+			/* Subtle film grain for tactile texture */
+			.grain-overlay {
+				pointer-events: none;
+				position: fixed;
+				inset: 0;
+				z-index: 60;
+				opacity: 0.035;
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+			}
+			:root.dark .grain-overlay {
+				opacity: 0.06;
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.grain-overlay { opacity: 0.025; }
 			}
 		</style>
 	</body>

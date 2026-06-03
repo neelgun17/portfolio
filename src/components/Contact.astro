@@ -1,16 +1,69 @@
 ---
-import Button from '@components/ui/Button.astro';
 import Social from '@components/ui/Social.astro';
 ---
 
 <section
 	data-testid="contact"
 	id="contact"
-	class="flex flex-col flex-wrap items-center justify-center gap-8 text-black dark:text-white lg:mb-0 lg:h-screen"
+	class="border-t border-neutral-200 px-6 py-24 dark:border-neutral-800 md:py-32"
 >
-	<Button size={'lg'} style={'primary'} name="Contact">Contact Me!</Button>
-	<hr class="w-1/2" />
-	<div class="flex flex-col gap-8 lg:flex lg:flex-row lg:gap-20">
-		<Social />
+	<div class="mx-auto max-w-5xl">
+		<p class="mb-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-accent">
+			<span class="text-neutral-400 dark:text-neutral-600">05</span>
+			/ Contact
+		</p>
+		<div class="grid gap-10 md:grid-cols-12 md:items-end">
+			<div class="md:col-span-8">
+				<h2 class="text-4xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100 md:text-5xl lg:text-6xl">
+					Let's build<br />something.
+				</h2>
+				<div
+					id="contact-underline"
+					class="mt-5 h-1 w-24 origin-left scale-x-0 rounded-full bg-accent"
+				>
+				</div>
+				<p class="mt-6 max-w-md text-lg leading-relaxed text-neutral-500 dark:text-neutral-400">
+					Always open to new opportunities, internships, and interesting projects.
+					The fastest way to reach me is email.
+				</p>
+			</div>
+
+			<div class="md:col-span-4 md:text-right">
+				<a
+					href="mailto:neelgundlapally@utexas.edu"
+					class="group inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-bright"
+				>
+					Say hello
+					<svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+					</svg>
+				</a>
+				<div class="mt-6 flex items-center gap-6 md:justify-end">
+					<Social />
+				</div>
+			</div>
+		</div>
 	</div>
 </section>
+
+<script>
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const underline = document.getElementById('contact-underline');
+	if (underline) {
+		if (reducedMotion) {
+			underline.style.transform = 'scaleX(1)';
+		} else {
+			const observer = new IntersectionObserver(
+				(entries) => {
+					if (entries[0].isIntersecting) {
+						underline.style.transition = 'transform 0.9s cubic-bezier(0.16,1,0.3,1)';
+						underline.style.transform = 'scaleX(1)';
+						observer.disconnect();
+					}
+				},
+				{ threshold: 0.6 }
+			);
+			observer.observe(underline);
+		}
+	}
+</script>

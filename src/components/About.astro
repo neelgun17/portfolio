@@ -1,20 +1,102 @@
 ---
+const facts = [
+	{ label: 'Education', value: 'B.S. Computer Science, Business minor', sub: 'UT Austin · May 2026' },
+	{ label: 'Based in', value: 'San Francisco, CA' },
+	{ label: 'Focus', value: 'Full-stack · ML systems · Distributed data' },
+	{ label: 'Currently', value: 'Open to full-time SWE & ML roles' },
+];
 ---
 
 <section
 	data-testid="about"
 	id="about"
-	class="mb-10 flex flex-col items-center justify-center lg:mb-0 lg:h-screen lg:flex-row"
+	class="px-6 py-24 md:py-32"
 >
-	<div class="mb-10 flex w-full flex-col items-center justify-center lg:mb-0 lg:w-1/2">
-		<h2 class="font-monospace text-2xl text-orange lg:text-4xl">About Me</h2>
-		<span class="mb-6 ml-2 h-1 w-20 bg-orange"></span>
-	</div>
+	<div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-12 lg:gap-16">
+		<div class="lg:col-span-7">
+			<p class="mb-8 flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-accent">
+				<span class="text-neutral-400 dark:text-neutral-600">01</span>
+				/ About
+			</p>
+			<p
+				id="about-text"
+				class="text-2xl font-medium leading-snug text-neutral-900 dark:text-neutral-100 md:text-3xl"
+			>I'm a Computer Science and Business graduate from UT Austin who likes building things end to end — from real-time ML pipelines and research code to the interfaces on top of them. I care about the details: clean abstractions, fast feedback loops, and software that feels good to use.</p>
+		</div>
 
-	<div class="w-full text-justify text-black dark:text-white lg:w-1/2">
-		<p class="mb-2 text-xl">
-			I am a student at UT Austin studying Computer Science. 
-			I am interested in web development and design along with machine learning.
-		</p>
-	</div>	
+		<div class="lg:col-span-5">
+			<dl class="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-neutral-200 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-800 sm:grid-cols-2 lg:grid-cols-1">
+				{
+					facts.map((f) => (
+						<div class="bg-white p-5 dark:bg-neutral-900">
+							<dt class="font-mono text-xs uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+								{f.label}
+							</dt>
+							<dd class="mt-1.5 font-medium text-neutral-900 dark:text-neutral-100">{f.value}</dd>
+							{f.sub && (
+								<dd class="mt-0.5 text-sm text-neutral-500 dark:text-neutral-400">{f.sub}</dd>
+							)}
+						</div>
+					))
+				}
+			</dl>
+		</div>
+	</div>
 </section>
+
+<script>
+	// Progressive enhancement: per-character variable-font weight that follows the cursor.
+	// The paragraph text is already fully visible in markup — this only modulates weight.
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const el = document.getElementById('about-text');
+
+	if (el && !reducedMotion) {
+		const INFLUENCE = 140;
+		const BASE = 450;
+		const MAX = 800;
+
+		document.fonts.ready.then(() => {
+			const text = el.textContent || '';
+			el.textContent = '';
+			const spans: HTMLSpanElement[] = [];
+			for (const ch of text) {
+				const span = document.createElement('span');
+				span.textContent = ch;
+				span.style.fontVariationSettings = `'wght' ${BASE}`;
+				span.style.willChange = 'font-variation-settings';
+				if (ch === ' ') span.style.whiteSpace = 'pre';
+				el.appendChild(span);
+				spans.push(span);
+			}
+
+			let mouse = { x: -9999, y: -9999 };
+			let raf = 0;
+
+			el.addEventListener('mousemove', (e) => {
+				mouse.x = e.clientX;
+				mouse.y = e.clientY;
+			});
+			el.addEventListener('mouseleave', () => {
+				mouse.x = -9999;
+				mouse.y = -9999;
+			});
+
+			function tick() {
+				for (const s of spans) {
+					const r = s.getBoundingClientRect();
+					const cx = r.left + r.width / 2;
+					const cy = r.top + r.height / 2;
+					const d = Math.hypot(mouse.x - cx, mouse.y - cy);
+					let wght = BASE;
+					if (d < INFLUENCE) {
+						const f = 1 - d / INFLUENCE;
+						wght = Math.round(BASE + (MAX - BASE) * f * f);
+					}
+					s.style.fontVariationSettings = `'wght' ${wght}`;
+				}
+				raf = requestAnimationFrame(tick);
+			}
+			tick();
+		});
+	}
+</script>

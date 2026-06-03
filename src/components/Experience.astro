@@ -1,0 +1,89 @@
+---
+const roles = [
+	{
+		org: 'Paycom',
+		role: 'Software Engineer Intern',
+		period: 'May — Aug 2025',
+		location: 'Dallas, TX',
+		points: [
+			'Led 6 interns to ship a production ML recommendation system for the client-facing learning platform, lifting course discovery 10%.',
+			'Built a real-time two-tower + MLP reranker pipeline (75% hit rate, 0.4 MRR), served via FastAPI + React to 10K+ daily users.',
+		],
+	},
+	{
+		org: 'Oden Institute · UT Austin',
+		role: 'Undergraduate Research Assistant',
+		period: '2024 — Present',
+		location: 'Austin, TX',
+		points: [
+			'Built a parallelized pipeline automating soft-tissue deformation simulations, raising throughput 40%.',
+			'Developed a physics-informed neural network (PINN) that cut solver convergence time ~25% while holding 1% relative error.',
+		],
+	},
+	{
+		org: 'Grubtok',
+		role: 'Software Engineer Intern',
+		period: 'May — Aug 2024',
+		location: 'Austin, TX',
+		points: [
+			'Streamlined the async video-upload flow in Flutter, cutting user clicks 40%.',
+			'Shipped cross-platform profile sharing via deep linking and state management, lifting engagement 10%.',
+		],
+	},
+	{
+		org: 'Autonomous Mobile Robotics Laboratory',
+		role: 'Robotics Researcher',
+		period: 'May — Aug 2024',
+		location: 'Austin, TX',
+		points: [
+			'Ported a Python API to C++ for ~10% better performance through tighter memory management.',
+			'Refactored the Boston Dynamics Spot codebase, cutting code volume 20% and improving maintainability.',
+		],
+	},
+];
+---
+
+<section
+	data-testid="experience"
+	id="experience"
+	class="border-t border-neutral-200 px-6 py-24 dark:border-neutral-800 md:py-32"
+>
+	<div class="mx-auto max-w-5xl">
+		<p class="mb-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-accent">
+			<span class="text-neutral-400 dark:text-neutral-600">03</span>
+			/ Experience
+		</p>
+		<h2 class="mb-12 text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100 lg:text-4xl">
+			Where I've worked
+		</h2>
+
+		<ol class="relative">
+			{
+				roles.map((r) => (
+					<li class="group relative grid gap-2 border-t border-neutral-200 py-7 dark:border-neutral-800 md:grid-cols-12 md:gap-8">
+						<div class="md:col-span-4">
+							<p class="font-mono text-xs uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+								{r.period}
+							</p>
+							<p class="mt-1 font-mono text-xs text-neutral-400 dark:text-neutral-600">{r.location}</p>
+						</div>
+						<div class="md:col-span-8">
+							<h3 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+								{r.role}
+								<span class="text-neutral-400 dark:text-neutral-500"> · {r.org}</span>
+							</h3>
+							<ul class="mt-3 space-y-1.5">
+								{r.points.map((p) => (
+									<li class="flex gap-2.5 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+										<span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent/60" />
+										{p}
+									</li>
+								))}
+							</ul>
+						</div>
+					</li>
+				))
+			}
+		</ol>
+	</div>
+</section>

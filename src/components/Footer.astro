@@ -1,15 +1,19 @@
-<footer data-testid="footer" class="p-6 text-center text-sm text-black dark:text-white">
-	<p>
-		Copyright © {new Date().getFullYear()}. All rights reserved. Made by <a
-			href="https://github.com/neelgun17/"
-			target="_blank"
-			rel="noopener"
-		>
-			<span class="text-orange"> Neel Gundlapally</span>
-		</a>
-		Website design from Veranika Kasparevych <a href="https://github.com/veranikabarel" target="_blank" rel="noopener"
-			><span class="text-orange"></span></a
-		>
-		<!-- !Fix this -->
-	</p>
+---
+import Social from '@components/ui/Social.astro';
+---
+
+<footer data-testid="footer" class="border-t border-neutral-200 px-6 py-10 dark:border-neutral-800">
+	<div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
+		<div class="flex flex-col items-center gap-1 sm:items-start">
+			<a href="/" class="font-mono text-sm font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+				Neel Gundlapally
+			</a>
+			<p class="font-mono text-xs text-neutral-400 dark:text-neutral-500">
+				© {new Date().getFullYear()} · Built with Astro &amp; Tailwind
+			</p>
+		</div>
+		<div class="flex items-center gap-6">
+			<Social />
+		</div>
+	</div>
 </footer>
