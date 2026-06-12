@@ -1,12 +1,12 @@
 ---
 inProgress: false
 order: 3
-title: AutoLight
-role: Computer-vision pipeline
-year: '2024'
-description: Intelligent basketball highlight extraction using YOLOv8 player detection, audio/motion analysis, and vision models. Full pipeline from raw footage to ranked, exportable highlight clips with a Streamlit UI.
+title: World Cup Fan Cam '26
+role: Live stadium streams
+year: '2026'
+description: Live street-cam feeds from outside all eight North American stadiums hosting the 2026 FIFA World Cup. Aggregates public DOT traffic cameras into a browsable grid so you can watch the hype build outside every host venue — grainy, live, and gloriously low-res.
 img: ''
-img_alt: AutoLight project
-link: https://github.com/neelgun17/AutoLight
-tags: ['Python', 'YOLOv8', 'FastAPI', 'OpenCV', 'PyTorch']
+img_alt: World Cup Fan Cam project
+link: https://worldcup-fan-cam.vercel.app
+tags: ['Next.js', 'TypeScript', 'Vercel', 'Live Streams']
 ---
